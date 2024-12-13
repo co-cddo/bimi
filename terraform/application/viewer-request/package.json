@@ -1,0 +1,28 @@
+{
+    "devDependencies": {
+        "chai": "^4.3.4",
+        "minify": "^10.2.0",
+        "mocha": "^10.2.0"
+    },
+    "scripts": {
+        "test": "minify index.js > index.min.js && mocha --reporter spec 'test_*.js'",
+        "minify": "minify index.js > index.min.js"
+    },
+    "name": "index",
+    "version": "1.0.0",
+    "main": "index.js",
+    "directories": {
+        "test": "."
+    },
+    "author": "OllieJC",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/co-cddo/bimi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/co-cddo/bimi/issues"
+    },
+    "homepage": "https://github.com/co-cddo/bimi",
+    "description": ""
+}
