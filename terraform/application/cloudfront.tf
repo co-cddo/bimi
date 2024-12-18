@@ -15,6 +15,10 @@ locals {
   xcf = sensitive(random_string.x_cf.result)
 }
 
+data "aws_cloudfront_cache_policy" "caching_enabled" {
+  name = "Managed-CachingOptimized"
+}
+
 data "aws_cloudfront_origin_request_policy" "s3_for_caching" {
   name = "Managed-CORS-S3Origin"
 }
@@ -78,18 +82,10 @@ resource "aws_cloudfront_distribution" "cdn" {
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "bimi-${terraform.workspace}-cfo"
 
-    forwarded_values {
-      query_string = false
-
-      cookies {
-        forward = "none"
-      }
-    }
-
-    //cache_policy_id          = aws_cloudfront_cache_policy.webcaf_wsgi_cache.id
-    //origin_request_policy_id = aws_cloudfront_origin_request_policy.webcaf_wsgi.id
-    compress               = false
-    viewer_protocol_policy = "redirect-to-https"
+    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_enabled.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.s3_for_caching.id
+    compress                 = false
+    viewer_protocol_policy   = "redirect-to-https"
 
     function_association {
       event_type   = "viewer-request"
