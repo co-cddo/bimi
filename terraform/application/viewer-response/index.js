@@ -12,14 +12,13 @@ function handler(event) {
     var uri = typeof (event.request) == "undefined" ? "/" : (
         typeof (event.request.uri) == "undefined" ? "/" : event.request.uri
     );
-    var to_cache = false;
+    
+    var max_age_cache = 3600;
     if (
-        uri.indexOf("/assets/") == 0
-        || uri.indexOf("/.well-known/") == 0
-        || uri.indexOf("/security.txt") == 0
-        || uri.indexOf("/robots.txt") == 0
+        uri.indexOf(".pem") !== -1
+        || uri.indexOf(".svg") !== -1
     ) {
-        to_cache = true;
+        max_age_cache = 31556952;
     }
 
     var headers = response.headers;
@@ -35,7 +34,7 @@ function handler(event) {
 
     if (!currentHeaderKeys.includes('cache-control')) {
         headers['cache-control'] = {
-            value: to_cache ? "public, max-age=3600" : "private, no-store"
+            value: max_age_cache !== 0 ? "public, max-age=" + max_age_cache : "private, no-store, max-age=0"
         };
     }
 
