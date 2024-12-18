@@ -157,7 +157,7 @@ describe("viewer_response", function () {
         expect(headers).to.include('x-frame-options');
 
         expect(headers).to.include('cache-control');
-        expect(res["headers"]["cache-control"].value).to.equal("private, no-store");
+        expect(res["headers"]["cache-control"].value).to.equal("public, max-age=3600");
 
         done();
     });
